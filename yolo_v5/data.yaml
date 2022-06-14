@@ -1,0 +1,5 @@
+train : ../drive/MyDrive/yolo_v5/images
+val : ../drive/MyDrive/yolo_v5/images
+
+nc: 3
+names: ['YELLOW', 'CUBE', 'ARC']
