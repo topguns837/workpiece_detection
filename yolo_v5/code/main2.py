@@ -1,9 +1,12 @@
 import numpy as np
 import cv2
+from imutils.video import FPS
 
 # step 1 - load the model
 
 net = cv2.dnn.readNet('yolov5s.onnx')
+cap = cv2.VideoCapture(3)
+fps = FPS().start()
 
 # step 2 - feed a 640x640 image to get predictions
 
@@ -15,7 +18,7 @@ def format_yolov5(frame):
     result[0:row, 0:col] = frame
     return result
 
-cap = cv2.VideoCapture(3)
+
 
 def detection(source) :
 
@@ -104,8 +107,12 @@ def main() :
 
             if cv2.waitKey(100) & 0xFF == ord('q'):
                 break
+            fps.update()
 
 main()
+
+fps.stop()
 cap.release()
+
 # Destroy all the windows
 cv2.destroyAllWindows()

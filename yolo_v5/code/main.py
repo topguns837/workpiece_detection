@@ -4,7 +4,7 @@ import sys
 import numpy as np
 
 def build_model(is_cuda):
-    net = cv2.dnn.readNet("yolov5s.onnx")
+    net = cv2.dnn.readNet("best_5_epoch_25.onnx")
     if is_cuda:
         print("Attempty to use CUDA")
         net.setPreferableBackend(cv2.dnn.DNN_BACKEND_CUDA)
@@ -28,7 +28,7 @@ def detect(image, net):
     return preds
 
 def load_capture():
-    capture = cv2.VideoCapture(1)
+    capture = cv2.VideoCapture(3)
     return capture
 
 def load_classes():
@@ -118,6 +118,8 @@ while True:
     outs = detect(inputImage, net)
 
     class_ids, confidences, boxes = wrap_detection(inputImage, outs[0])
+    print("ID : " , class_ids)
+    print("Boxes : ",boxes)
 
     frame_count += 1
     total_frames += 1
@@ -126,7 +128,11 @@ while True:
          color = colors[int(classid) % len(colors)]
          cv2.rectangle(frame, box, color, 2)
          cv2.rectangle(frame, (box[0], box[1] - 20), (box[0] + box[2], box[1]), color, -1)
-         cv2.putText(frame, class_list[classid], (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, .5, (0,0,0))
+
+         try :
+             cv2.putText(frame, class_list[classid], (box[0], box[1] - 10), cv2.FONT_HERSHEY_SIMPLEX, .5, (0,0,0))
+         except :
+             pass
 
     if frame_count >= 30:
         end = time.time_ns()
