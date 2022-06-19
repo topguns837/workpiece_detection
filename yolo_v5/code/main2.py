@@ -23,8 +23,9 @@ def format_yolov5(frame):
 def detection(source) :
 
 
-    image = source
-    input_image = format_yolov5(source) # making the image square
+    image = cv2.resize(source , (640,640))
+    image = cv2.GaussianBlur(image , (5,5) , 0)
+    input_image = format_yolov5(image) # making the image square
     blob = cv2.dnn.blobFromImage(input_image , 1/255.0, (640, 640), swapRB=True)
     net.setInput(blob)
     predictions = net.forward()

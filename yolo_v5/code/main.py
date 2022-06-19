@@ -115,9 +115,11 @@ while True:
         break
 
     inputImage = format_yolov5(frame)
-    outs = detect(inputImage, net)
+    resized = cv2.resize(inputImage , (640,640))
+    blurred = cv2.blur(resized ,(10,10))
+    outs = detect(blurred, net)
 
-    class_ids, confidences, boxes = wrap_detection(inputImage, outs[0])
+    class_ids, confidences, boxes = wrap_detection(blurred, outs[0])
     print("ID : " , class_ids)
     print("Boxes : ",boxes)
 
